@@ -13,11 +13,12 @@ const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
 
+// Send WhatsApp message using Twilio
 const sendTwilioMessage = async (phoneNumber, message) => {
     await client.messages.create({
         body: message,
-        from: process.env.PHONE_NUMBER,
-        to: phoneNumber
+        from: 'whatsapp:' + process.env.PHONE_NUMBER, // WhatsApp-enabled Twilio number
+        to: 'whatsapp:' + phoneNumber // Recipient's WhatsApp number
     });
 };
 
@@ -56,10 +57,10 @@ app.post("/send-email", async (req, res) => {
 
             try {
                 await sendTwilioMessage('+919787867648', messageBody); // replace with the recipient's phone number
-                res.status(200).send("Email and Twilio message sent successfully");
+                res.status(200).send("Email and WhatsApp message sent successfully");
             } catch (error) {
-                console.error("Error sending Twilio message:", error);
-                res.status(500).send("Error sending email and Twilio message");
+                console.error("Error sending WhatsApp message:", error);
+                res.status(500).send("Error sending email and WhatsApp message");
             }
         }
     });
